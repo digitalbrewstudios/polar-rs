@@ -71,6 +71,7 @@
               ];
 
             RUST_BACKTRACE = "1";
+            RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
           };
         };
     };
