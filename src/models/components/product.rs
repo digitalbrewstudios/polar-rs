@@ -1,17 +1,16 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use uuid::Uuid;
 
 use super::{
-    benefit_articles::BenefitArticles,
-    benefit_base::BenefitBase,
-    product_media_file_read::{ProductMediaFileRead, ProductMediaFileReadInput},
-    product_price::ProductPrice,
+    benefit_articles::BenefitArticles, benefit_base::BenefitBase,
+    product_media_file_read::ProductMediaFileReadInput, product_price::ProductPrice,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Product {
-    pub id: String,
+    pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub modified_at: Option<DateTime<Utc>>,
     pub trial_interval: Option<String>, // TODO: make this a strenum
@@ -22,7 +21,7 @@ pub struct Product {
     pub recurring_interval_count: Option<i64>,
     pub is_recurring: bool,
     pub is_archived: bool,
-    pub organization_id: String,
+    pub organization_id: Uuid,
     pub metadata: Value,
     pub prices: Vec<Value>,   // TODO: fix this
     pub benefits: Vec<Value>, // TODO: fix this

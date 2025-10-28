@@ -24,12 +24,13 @@
           pkgs,
           ...
         }:
-        {
-          _module.args.pkgs = import inputs.nixpkgs {
+        let
+          pkgs = import inputs.nixpkgs {
             inherit system;
             overlays = [ (import inputs.rust-overlay) ];
           };
-
+        in
+        {
           pre-commit = {
             check.enable = true;
             settings.hooks = {
@@ -51,10 +52,10 @@
 
               cargo-check.enable = true;
               clippy.enable = true;
-              clippy.settings.extraArgs = builtins.concatStringsSep " " [
-                "-Dwarnings"
-              ];
+              clippy.settings.denyWarnings = true;
             };
+            settings.tools.cargo = pkgs.lib.mkForce pkgs.rust-bin.stable.latest.default;
+            settings.tools.clippy = pkgs.lib.mkForce pkgs.rust-bin.stable.latest.default;
           };
 
           devShells.default = pkgs.mkShell {

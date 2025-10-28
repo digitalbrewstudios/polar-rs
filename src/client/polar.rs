@@ -36,10 +36,7 @@ impl Polar {
         );
 
         let client = Client::builder().default_headers(headers).build().unwrap();
-        Self {
-            client,
-            server: server,
-        }
+        Self { client, server }
     }
 
     pub fn list_products() {}
