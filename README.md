@@ -1,3 +1,6 @@
+> [!WARNING]
+> This sdk is not fully usable/ready to be used in production environment that requies a lot of polar API's
+
 # polar-rs
 Polar SDK for Rust
 
