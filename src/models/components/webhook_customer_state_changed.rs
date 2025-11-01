@@ -4,15 +4,15 @@ use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct WebhookCustomerUpdatedPayload {
+pub struct WebhookCustomerStateChangedPayload {
     #[serde(rename = "type")]
     pub webhook_type: String,
     pub timestamp: DateTime<Utc>,
-    pub data: CustomerUpdatedData,
+    pub data: CustomerStateChangedData,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CustomerUpdatedData {
+pub struct CustomerStateChangedData {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub modified_at: Option<DateTime<Utc>>,
@@ -25,6 +25,9 @@ pub struct CustomerUpdatedData {
     pub tax_id: Option<Vec<Value>>,
     pub organization_id: Uuid,
     pub deleted_at: Option<DateTime<Utc>>,
+    pub active_subscriptions: Vec<Value>, // CustomerStateSubscription
+    pub granted_benefits: Vec<Value>,     // CustomerStateBenefitGrant
+    pub active_meters: Vec<Value>,        // CustomerStateMeter
     pub avatar_url: String,
 }
 
@@ -35,30 +38,31 @@ mod tests {
     #[test]
     fn test_webhook_customer_updated_payload_from_json() {
         let body_json = r#"
-{
-    "type": "customer.updated",
-    "timestamp": "2025-11-01T22:54:29.201489Z",
+    {
+    "type": "customer.state_changed",
+    "timestamp": "2025-11-01T01:29:35.523473Z",
     "data": {
-        "id": "17926f0f-5541-41b1-a3bd-65af6b9b8c34",
-        "created_at": "2025-11-01T22:51:31.216868Z",
-        "modified_at": "2025-11-01T22:54:29.082649Z",
-        "metadata": {
-            "feet": "yes",
-            "ankles": "yes"
-        },
-        "external_id": "gothbaddie",
-        "email": "qy7u9458ghq890q4ytnvfkzvaheauiph@gmail.com",
+        "id": "a7c90cb0-6168-4678-a016-7ae09f9d7531",
+        "created_at": "2025-11-01T01:29:35.451636Z",
+        "modified_at": null,
+        "metadata": {},
+        "external_id": null,
+        "email": "fiahowepfgyhveiwoapyofh8uaiw3eo4rfyhaha4uth4kfa@gmail.com",
         "email_verified": false,
-        "name": "Goth Baddie McGee",
+        "name": "Joe Shmo",
         "billing_address": null,
         "tax_id": null,
         "organization_id": "7eae7216-658f-4efd-afe3-1c6ad07d58e5",
         "deleted_at": null,
-        "avatar_url": "https://www.gravatar.com/avatar/115039e1011a18a7e28819c6f9d9ac0991e7d8df084730be52e26c2cd0d8853e?d=404"
+        "active_subscriptions": [],
+        "granted_benefits": [],
+        "active_meters": [],
+        "avatar_url": "https://www.gravatar.com/avatar/02bfef3af593e88ab64eaf102e9df96a1f812393cc6d84a28853d51d8d0a3a05?d=404"
+        }
     }
-}"#;
+    "#;
 
-        let body: WebhookCustomerUpdatedPayload = serde_json::from_str(body_json).unwrap();
+        let body: WebhookCustomerStateChangedPayload = serde_json::from_str(body_json).unwrap();
         println!("{body:?}")
     }
 }

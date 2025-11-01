@@ -4,15 +4,15 @@ use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct WebhookCustomerUpdatedPayload {
+pub struct WebhookCustomerCreatedPayload {
     #[serde(rename = "type")]
     pub webhook_type: String,
     pub timestamp: DateTime<Utc>,
-    pub data: CustomerUpdatedData,
+    pub data: CustomerCreatedData,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CustomerUpdatedData {
+pub struct CustomerCreatedData {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub modified_at: Option<DateTime<Utc>>,
@@ -36,15 +36,14 @@ mod tests {
     fn test_webhook_customer_updated_payload_from_json() {
         let body_json = r#"
 {
-    "type": "customer.updated",
-    "timestamp": "2025-11-01T22:54:29.201489Z",
+    "type": "customer.created",
+    "timestamp": "2025-11-01T22:51:31.323069Z",
     "data": {
         "id": "17926f0f-5541-41b1-a3bd-65af6b9b8c34",
         "created_at": "2025-11-01T22:51:31.216868Z",
-        "modified_at": "2025-11-01T22:54:29.082649Z",
+        "modified_at": null,
         "metadata": {
-            "feet": "yes",
-            "ankles": "yes"
+            "feet": "yes"
         },
         "external_id": "gothbaddie",
         "email": "qy7u9458ghq890q4ytnvfkzvaheauiph@gmail.com",
@@ -56,9 +55,9 @@ mod tests {
         "deleted_at": null,
         "avatar_url": "https://www.gravatar.com/avatar/115039e1011a18a7e28819c6f9d9ac0991e7d8df084730be52e26c2cd0d8853e?d=404"
     }
-}"#;
+}    "#;
 
-        let body: WebhookCustomerUpdatedPayload = serde_json::from_str(body_json).unwrap();
+        let body: WebhookCustomerCreatedPayload = serde_json::from_str(body_json).unwrap();
         println!("{body:?}")
     }
 }
